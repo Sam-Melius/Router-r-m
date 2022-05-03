@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 
 
 export default function CharacterList() {
+  const location = useLocation();
+  const history = useHistory();
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const status = new URLSearchParams(location.search).get('status') ?? 'all';
-  const location = useLocation();
+  
+
+  const handleStatus = (event) => {
+    history.push(`/?status=${event.target.value}`);
+  };
 
   
 
@@ -16,7 +22,7 @@ export default function CharacterList() {
 
       const statusParams = new URLSearchParams(location.search).get('status');
 
-      const url = status === 'all' || !status 
+      const url = statusParams === 'all' || !statusParams 
       ? 'https://rickandmortyapi.com/api/character'
       : `https://rickandmortyapi.com/api/character?status=${statusParams}`;
       const res = await fetch(url);
@@ -34,18 +40,23 @@ export default function CharacterList() {
     {loading ? (
       <p>Loading</p>
     ) : (
-      <>
-      <ul>
-        {characters.map((character) => {
-          return (
-            <li key={character.id}>
-              {character.name}
-            </li>
-          )
-        })}
-      </ul>
-      </>
+      <section>
+          <label htmlFor="status">Character status:</label>
+          <select id="status" value={status} onChange={handleStatus}>
+            <option value="all">All</option>
+            <option value="alive">Alive</option>
+            <option value="dead">Dead</option>
+            <option value="unknown">Unknown</option>
+          </select>
+          {characters.map((character) => (
+            <article key={character.id}>
+              <Link to={`/characters/${character.id}`}>
+                <h3>{character.name}</h3>
+              </Link>
+            </article>
+          ))}
+        </section>
     )}
     </>
-  )
+  );
 }
