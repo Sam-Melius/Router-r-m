@@ -52,6 +52,7 @@ export default function CharacterList() {
             <article key={character.id}>
               <Link to={`/characters/${character.id}`}>
                 <h3>{character.name}</h3>
+                <p>Status: {character.status}</p>
               </Link>
             </article>
           ))}
