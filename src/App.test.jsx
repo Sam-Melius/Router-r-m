@@ -7,6 +7,8 @@ describe('<App />', () => {
     it('renders list and navigates to detail page', async () => {
         render(
             <MemoryRouter>
+                initialEntries={['/', '/characters/3']}
+                initialIndex{0}
                 <App />
             </MemoryRouter>
         );
@@ -16,5 +18,6 @@ describe('<App />', () => {
         userEvent.click(character);
 
         await screen.findByAltText('Picture of Summer Smith');
-    })
+    });
+
 })
