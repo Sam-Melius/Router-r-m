@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import {  Link, useNavigate } from 'react-router-dom';
 
 
 export default function CharacterList() {
-  const location = useLocation();
-  const history = useHistory();
+  // const location = useLocation();
+  const navigate = useNavigate();
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const status = new URLSearchParams(location.search).get('status') ?? 'all';
   
 
   const handleStatus = (event) => {
-    history.push(`/?status=${event.target.value}`);
+    navigate(`/?status=${event.target.value}`);
   };
 
   
@@ -36,6 +36,7 @@ export default function CharacterList() {
 
   return (
     <>
+    <button className='help' id='help' onclick={window.CommandBar.trackEvent()}>Help</button>
     <h1>List of Characters</h1>
     {loading ? (
       <p>Loading</p>
